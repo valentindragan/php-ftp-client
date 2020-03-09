@@ -399,11 +399,13 @@ class FtpClient implements Countable
     public function rmdir($directory, $recursive = true)
     {
         if ($recursive) {
+	    //if directory has absolute path, keep absolute path for files
+	    $path = (substr($directory, 0, 1) === '/') ? '':$directory;
             $files = $this->nlist($directory, false, 'rsort');
 
             // remove children
             foreach ($files as $file) {
-                $this->remove($directory.'/'.$file, true);
+                $this->remove($path.'/'.$file, true);
             }
         }
 
